@@ -5,13 +5,11 @@ const fileRouter = require("./routes/file.routes");
 const app = express();
 const PORT = process.env.PORT;
 const corsMiddleware = require("./middleware/cors.middleware")
-const filePathMiddleware = require("./middleware/filepath.middleware")
 const fileUpload = require("express-fileupload")
 const path = require("path")
 
 app.use(fileUpload({}))
 app.use(corsMiddleware)
-app.use(filePathMiddleware(path.resolve(__dirname, "files")))
 app.use(express.json())
 app.use(express.static("static"))
 app.use("/api/auth", authRouter);
