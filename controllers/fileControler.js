@@ -13,6 +13,8 @@ class FileController {
             const avatarName = Uuid.v4() + ".jpg"
             file.mv(req.pathStatic + "\\" + avatarName)
             user.avatar = avatarName;
+            console.log(req.pathStatic)
+            console.log(req.pathStatic + "\\" + avatarName)
             await user.save();
             return res.json(user)
         } catch(e){
