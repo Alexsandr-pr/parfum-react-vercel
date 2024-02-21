@@ -15,6 +15,7 @@ app.use(fileUpload({}))
 app.use(corsMiddleware)
 app.use(express.json())
 app.use(express.static("static"))
+console.log(__dirname)
 app.use(fileMiddleware(path.resolve(__dirname, "static")));
 app.use("/api/auth", authRouter);
 app.use("/api/files", fileRouter);
