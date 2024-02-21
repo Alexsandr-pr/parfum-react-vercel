@@ -9,14 +9,22 @@ class FileController {
     async uploadAvatar(req, res){
         try {
             const file = req.files.file;
+
             const user = await User.findById(req.user.id);
+
             const avatarName = Uuid.v4() + ".jpg";
+
+            // Полный путь к файлу, используя путь к статик папке
             const filePath = path.join(req.pathStatic, avatarName);
+
             // Переместить файл в папку статик
             await file.mv(filePath);
+
             // Обновить путь аватара пользователя
             user.avatar = avatarName;
+
             await user.save();
+
             return res.json(user);
         } catch(e){
             console.log(e);
@@ -24,7 +32,22 @@ class FileController {
         }
         }
     
-    /*
+    
+        /*
+    async deleteAvatar(req, res){
+        try {
+            const user = await User.findById(req.user.id)
+            fs.unlinkSync(req.pathStatic + "\\" + user.avatar)
+            user.avatar = null
+            await user.save();
+            return res.json(user)
+        } catch(e){
+            console.log(e)
+            return res.status(400).json({message: "Delete avatar error"})
+        }
+    }
+    */
+
     //async deleteAvatar(req, res){
         //try {
           //  const user = await User.findById(req.user.id)
@@ -37,8 +60,9 @@ class FileController {
             //return res.status(400).json({message: "Delete avatar error"})
         //}
    // }
-    */
-    /*
+    
+    
+
    // async deleteAvatar(req, res){
      //   try {
             // Найти пользователя по идентификатору
@@ -56,26 +80,26 @@ class FileController {
         //    return res.status(400).json({message: "Delete avatar error"});
        // }
    // }
-    */
+    
     async deleteAvatar(req, res) {
-    try {
-        const user = await User.findById(req.user.id);
-        
-        if (!user || !user.avatar) {
-            return res.status(404).json({ message: "User or avatar not found" });
+        try {
+            const user = await User.findById(req.user.id);
+            
+            if (!user || !user.avatar) {
+                return res.status(404).json({ message: "User or avatar not found" });
+            }
+            
+            const filePath = path.join(req.pathStatic, user.avatar);
+            fs.unlinkSync(filePath); 
+            user.avatar = null;
+            await user.save(); 
+
+            return res.json(user);
+        } catch (error) {
+            console.error("Delete avatar error:", error);
+            return res.status(400).json({ message: "Delete avatar error" });
         }
-        
-        const filePath = path.join(req.pathStatic, user.avatar);
-        await deleteFile(filePath); // Удаление файла из папки статик
-        user.avatar = null;
-        await user.save(); // Сохранение изменений в базе данных
-        
-        return res.json(user);
-    } catch (error) {
-        console.error("Delete avatar error:", error);
-        return res.status(400).json({ message: "Delete avatar error" });
     }
-}
 } 
 
 

@@ -16,7 +16,6 @@ app.use(corsMiddleware)
 app.use(express.json())
 app.use(express.static("static"))
 app.use(fileMiddleware(path.resolve(__dirname, "static")));
-console.log(__dirname)
 
 app.use("/api/auth", authRouter);
 app.use("/api/files", fileRouter);
