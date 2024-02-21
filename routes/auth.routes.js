@@ -132,9 +132,7 @@ router.delete("/delete", authMiddleware,
         try {
             const user = await User.findOne(({_id: req.user.id})); 
             if(user) {
-                if(user.avatar) {
-                    fs.unlinkSync(process.env.staticPath + "\\" + user.avatar)
-                }
+                
                 await User.deleteOne({ _id: user.id })
             }
             if (!user) {
