@@ -8,7 +8,7 @@ const app = express();
 const PORT = process.env.PORT;
 const corsMiddleware = require("./middleware/cors.middleware")
 const fileUpload = require("express-fileupload")
-const fileMiddleware = require("./middleware/filepath.middleware")
+const fileMiddleware = require("./middleware/filePath.middleware")
 const path = require("path")
 
 app.use(fileUpload({}))
