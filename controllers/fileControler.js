@@ -12,10 +12,12 @@ class FileController {
             const user = await User.findById(req.user.id)
             const avatarName = Uuid.v4() + ".jpg"
             file.mv(req.pathStatic + "\\" + avatarName)
+            console.log(file.mv(req.pathStatic + "\\" + avatarName))
             user.avatar = avatarName;
             console.log(req.pathStatic)
             console.log(req.pathStatic + "\\" + avatarName)
             await user.save();
+            console.log(user)
             return res.json(user)
         } catch(e){
             console.log(e)
@@ -26,8 +28,11 @@ class FileController {
     async deleteAvatar(req, res){
         try {
             const user = await User.findById(req.user.id)
+            console.log( fs.unlinkSync(req.pathStatic + "\\" + user.avatar))
             fs.unlinkSync(req.pathStatic + "\\" + user.avatar)
+            
             user.avatar = null
+            
             await user.save();
             return res.json(user)
         } catch(e){
