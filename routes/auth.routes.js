@@ -6,11 +6,9 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const {check, validationResult} = require("express-validator");
 const authMiddleware = require("../middleware/auth.middleware")
-const FileService = require("../services/fileService");
-const File =  require("../models/File");
 const Order  = require("../models/Order");
 const fs = require("fs")
-
+require("dotenv").config()
 
 router.post("/registration", 
     [
@@ -35,8 +33,6 @@ router.post("/registration",
         
         const user = new User({email, password: hashPassword, gender, bonus})
         await user.save()
-
-        await FileService.createDir(req, new File({user: user.id, name: ""}))
         return res.json({message: "User was created"})
     } catch(e) {
         res.send({message:"Server error"})
@@ -106,6 +102,7 @@ router.get("/auth", authMiddleware,
 })
 
 router.post("/change", authMiddleware,
+
     async (req,res) => {
         try {
             
@@ -221,15 +218,17 @@ router.get(`/card-sort`, async (req, res) => {
     }
 });
 
-router.post("/adress", async (req, res) => {
+router.post("/adress", authMiddleware,
+
+    async (req, res) => {
     try {
-        const { email, adress } = req.body; 
-        
-        const user = await User.findOne({ email });
+        const { adress } = req.body; 
+        console.log(adress)
+        const user = await User.findOne({_id: req.user.id})
+
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
-    
         user.adress = adress;
         
         await user.save(); 
