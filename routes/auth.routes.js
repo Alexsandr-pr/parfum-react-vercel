@@ -9,6 +9,7 @@ const authMiddleware = require("../middleware/auth.middleware")
 const Order  = require("../models/Order");
 const fs = require("fs")
 require("dotenv").config()
+const path = require("path")
 
 router.post("/registration", 
     [
@@ -105,12 +106,9 @@ router.post("/change", authMiddleware,
 
     async (req,res) => {
         try {
-            
             const {password, newPassword} = req.body;
-            
             const user = await User.findOne({_id: req.user.id})
             const isPassValid = bcrypt.compareSync(password, user.password)
-
             if(!isPassValid) {
                 return res.status(400).json({message: "Invalid password"})
             } else {
@@ -132,7 +130,8 @@ router.delete("/delete", authMiddleware,
         try {
             const user = await User.findOne(({_id: req.user.id})); 
             if(user) {
-                
+                const filePath = path.join(req.pathStatic, user.avatar);
+                fs.unlinkSync(filePath); 
                 await User.deleteOne({ _id: user.id })
             }
             if (!user) {
@@ -146,9 +145,6 @@ router.delete("/delete", authMiddleware,
         }
     }
 );
-
-
-
 
 router.post("/comment", authMiddleware, async (req, res) => {
     try {
@@ -164,8 +160,6 @@ router.post("/comment", authMiddleware, async (req, res) => {
         return res.status(500).json({ error: "Internal server error" });
     }
 });
- 
-
 
 
 router.get("/tovar", async (req, res) => {

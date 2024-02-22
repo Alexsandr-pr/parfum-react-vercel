@@ -30,56 +30,9 @@ class FileController {
             console.log(e);
             return res.status(400).json({message: "Upload avatar error"});
         }
-        }
-    
-    
-        /*
-    async deleteAvatar(req, res){
-        try {
-            const user = await User.findById(req.user.id)
-            fs.unlinkSync(req.pathStatic + "\\" + user.avatar)
-            user.avatar = null
-            await user.save();
-            return res.json(user)
-        } catch(e){
-            console.log(e)
-            return res.status(400).json({message: "Delete avatar error"})
-        }
     }
-    */
-
-    //async deleteAvatar(req, res){
-        //try {
-          //  const user = await User.findById(req.user.id)
-          //  fs.unlinkSync(req.pathStatic + "\\" + user.avatar)
-           // user.avatar = null
-           // await user.save();
-           // return res.json(user)
-       // } catch(e){
-            //console.log(e)
-            //return res.status(400).json({message: "Delete avatar error"})
-        //}
-   // }
-    
     
 
-   // async deleteAvatar(req, res){
-     //   try {
-            // Найти пользователя по идентификатору
-          //  const user = await User.findById(req.user.id);
-            // Удалить файл аватара из папки статик
-         //   fs.unlinkSync(req.pathStatic + "\\" + user.avatar);
-            // Удалить ссылку на аватар у пользователя в базе данных
-         //   user.avatar = null;
-            // Сохранить обновленную информацию о пользователе
-         //   await user.save();
-            // Отправить ответ с обновленной информацией о пользователе
-        //    return res.json(user);
-      //  } catch(e){
-      //      console.log(e);
-        //    return res.status(400).json({message: "Delete avatar error"});
-       // }
-   // }
     
     async deleteAvatar(req, res) {
         try {
